@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Podcard</title>
+  <!-- Liên kết đến Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Đặt lại margin và padding mặc định */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Định dạng cho body */
+    body {  
+      font-family: 'Roboto', sans-serif; /* Đặt font chữ */
+      background: url('back3.jpg') no-repeat center center fixed; /* Hình nền */
+      background-size: cover; /* Bao phủ toàn bộ nền */
+      color: #333; /* Màu chữ */
+      height: 100vh; /* Chiều cao toàn màn hình */
+      overflow-y: scroll; /* Hiển thị thanh cuộn dọc */
+      position: relative; /* Đặt vị trí tương đối */
+    }
+
+    /* Định dạng cho container */
+    .container { 
+      display: flex; /* Sử dụng flexbox */
+      flex-direction: column; /* Hướng cột */
+      padding: 20px; /* Padding xung quanh container */
+      min-height: 100vh; /* Chiều cao tối thiểu */
+      position: relative; /* Đặt vị trí tương đối */
+    }
+
+    /* Định dạng cho header */
+    .header {
+      display: flex; /* Sử dụng flexbox */
+      align-items: center; /* Căn giữa theo chiều dọc */
+      position: absolute; /* Định vị tuyệt đối */
+      top: 20px; /* Cách trên 20px */
+      left: 20px; /* Cách trái 20px */
+      z-index: 2; /* Z-index để xếp lớp */
+    }
+
+    /* Định dạng cho logo */
+    .logo img { 
+      max-height: 90px; /* Chiều cao tối đa */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Đổ bóng */
+      transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi */
+    }
+
+    /* Hiệu ứng hover cho logo */
+    .logo img:hover {
+      transform: scale(1.1); /* Phóng to khi hover */
+    }
+
+    /* Định dạng cho tên trường */
+    .school-name {
+      margin-left: 20px; /* Cách trái */
+      font-size: 1.8rem; /* Kích thước font chữ */
+      color: #000; /* Màu chữ */
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Đổ bóng chữ */
+    }
+
+    /* Định dạng cho nội dung chính */
+    .main {  
+      display: flex; /* Sử dụng flexbox */
+      justify-content: center; /* Căn giữa theo chiều ngang */
+      align-items: center; /* Căn giữa theo chiều dọc */
+      flex-grow: 1; /* Tăng trưởng để lấp đầy không gian */
+      padding: 50px 0; /* Padding trên và dưới */
+    }
+
+    /* Định dạng cho phần bên trái */
+    .left { 
+      flex: 1; /* Tăng trưởng flex */
+      padding: 20px; /* Padding */
+      text-align: center; /* Căn giữa văn bản */
+    }
+
+    /* Định dạng cho phần bên phải */
+    .right { 
+      flex: 1; /* Tăng trưởng flex */
+      display: flex; /* Sử dụng flexbox */
+      flex-direction: column; /* Hướng cột */
+      align-items: flex-start; /* Căn trái theo chiều ngang */
+      padding: 20px; /* Padding */
+      margin-top: -40px; /* Margin trên âm */
+      margin-left: -150px; /* Margin trái âm */
+    }
+
+    /* Định dạng cho hình ảnh podcard */
+    .podcard img { 
+      max-width: 50%; /* Chiều rộng tối đa */
+      height: auto; /* Chiều cao tự động */
+      border-radius: 15px; /* Bo tròn góc */
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+      transition: transform 0.3s ease; /* Hiệu ứng chuyển đổi */
+    }
+
+    /* Hiệu ứng hover cho hình ảnh podcard */
+    .podcard img:hover {
+      transform: scale(1.05); /* Phóng to khi hover */
+    }
+
+    /* Định dạng cho tiêu đề */
+    h2 {
+      font-size: 2.5rem; /* Kích thước font chữ */
+      color: #000; /* Màu chữ */
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); /* Đổ bóng chữ */
+      margin-bottom: 10px; /* Margin dưới */
+      margin-left: -20px; /* Đẩy tiêu đề qua trái */
+    }
+
+    /* Định dạng cho nhà xuất bản và tác giả */
+    .publisher, .author {
+      font-size: 1.1rem; /* Kích thước font chữ */
+      color: #000; /* Màu chữ */
+      margin: 5px 0; /* Margin trên và dưới */
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Đổ bóng chữ */
+      margin-left: -20px; /* Đẩy nhà xuất bản và tác giả qua trái */
+    }
+
+    /* Định dạng cho trình phát audio */
+    .audio-player {
+      margin-top: 20px; /* Margin trên */
+      background: rgba(255, 255, 255, 0.9); /* Màu nền */
+      padding: 15px 25px; /* Padding */
+      border-radius: 50px; /* Bo tròn góc */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+      display: flex; /* Sử dụng flexbox */
+      align-items: center; /* Căn giữa theo chiều dọc */
+      justify-content: space-between; /* Khoảng cách giữa các phần tử */
+      width: 350px; /* Chiều rộng */
+      transition: all 0.3s ease; /* Hiệu ứng chuyển đổi */
+      margin-left: -20px; /* Đẩy trình phát audio qua trái */
+    }
+
+    /* Hiệu ứng hover cho trình phát audio */
+    .audio-player:hover {
+      transform: translateY(-5px); /* Di chuyển lên khi hover */
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Đổ bóng */
+    }
+
+    /* Định dạng cho nút trình phát audio */
+    .audio-player button {
+      background: none; /* Không nền */
+      border: none; /* Không viền */
+      font-size: 1.2rem; /* Kích thước font chữ */
+      cursor: pointer; /* Con trỏ chuột */
+      padding: 5px 10px; /* Padding */
+      color: #333; /* Màu chữ */
+      transition: color 0.3s ease; /* Hiệu ứng chuyển đổi */
+    }
+
+    /* Hiệu ứng hover cho nút trình phát audio */
+    .audio-player button:hover {
+      color: #007bff; /* Màu chữ khi hover */
+    }
+
+    /* Định dạng cho thanh tiến trình */
+    .progress-bar {
+      flex-grow: 1; /* Tăng trưởng flex */
+      height: 5px; /* Chiều cao */
+      background: #ddd; /* Màu nền */
+      border-radius: 5px; /* Bo tròn góc */
+      margin: 0 10px; /* Margin trái và phải */
+      position: relative; /* Đặt vị trí tương đối */
+      cursor: pointer; /* Con trỏ chuột */
+    }
+
+    /* Định dạng cho thanh tiến trình */
+    .progress {
+      height: 100%; /* Chiều cao đầy đủ */
+      background: #007bff; /* Màu nền */
+      border-radius: 5px; /* Bo tròn góc */
+      width: 0; /* Chiều rộng ban đầu */
+      transition: width 0.1s linear; /* Hiệu ứng chuyển đổi */
+    }
+
+    /* Định dạng cho hiển thị thời gian */
+    .time {
+      font-size: 0.9rem; /* Kích thước font chữ */
+      color: #333; /* Màu chữ */
+      margin-left: 10px; /* Margin trái */
+    }
+
+    /* Định dạng cho phần cuộn */
+    .scrollable {
+      background: rgba(255, 255, 255, 0.85); /* Màu nền */
+      border-radius: 20px; /* Bo tròn góc */
+      padding: 20px; /* Padding */
+      margin: 20px; /* Margin */
+      text-align: left; /* Căn trái văn bản */
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Đổ bóng */
+    }
+
+    /* Định dạng cho tiêu đề h3 */
+    h3 {
+      font-size: 3rem; /* Kích thước font chữ */
+      color: #333; /* Màu chữ */
+      margin-bottom: 10px; /* Margin dưới */
+    }
+
+    /* Định dạng cho thanh cuộn */
+    ::-webkit-scrollbar {
+      width: 10px; /* Chiều rộng */
+    }
+
+    /* Định dạng cho track của thanh cuộn */
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.5); /* Màu nền */
+    }
+
+    /* Định dạng cho thumb của thanh cuộn */
+    ::-webkit-scrollbar-thumb {
+      background: #007bff; /* Màu nền */
+      border-radius: 5px; /* Bo tròn góc */
+    }
+
+    /* Hiệu ứng hover cho thumb của thanh cuộn */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #0056b3; /* Màu nền khi hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <img src="nq.jpg" alt="Logo"> <!-- Hình ảnh logo -->
+      </div>
+      <div class="school-name">
+        Trường THCS Ngô Quyền <!-- Tên trường -->
+      </div>
+    </div>
+    <div class="main">
+      <div class="left">
+        <div class="podcard">
+          <img src="sach.jpg" alt="Podcard Hình Ảnh"> <!-- Hình ảnh podcard -->
+        </div>
+      </div>
+      <div class="right">
+        <h2>Tử Tế Đáng Giá Bao Nhiêu?</h2> <!-- Tiêu đề -->
+        <div class="publisher"><strong>Nhà xuất bản:</strong> Nhà xuất bản Trẻ</div> <!-- Nhà xuất bản -->
+        <div class="author"><strong>Tác giả:</strong> Bernadette Russell</div> <!-- Tác giả -->
+        <div class="audio-player">
+          <button id="rewind">⏪</button> <!-- Nút tua lại -->
+          <button id="playPause">▶️</button> <!-- Nút phát/tạm dừng -->
+          <button id="forward">⏩</button> <!-- Nút tua tới -->
+          <div class="progress-bar" id="progressBar">
+            <div class="progress" id="progress"></div> <!-- Thanh tiến trình -->
+          </div>
+          <span class="time" id="time">0:00 / 0:00</span> <!-- Hiển thị thời gian -->
+        </div>
+      </div>
+    </div>
+    <div class="scrollable">
+      <h3>Giới thiệu sách</h3> <!-- Tiêu đề giới thiệu -->
+      <p>Bạn đã bao giờ tự hỏi liệu lòng tử tế có thể thay đổi cuộc sống của mình hay không? Bernadette Russell đã thử nghiệm điều đó bằng cách thực hiện một hành động tử tế mỗi ngày trong suốt một năm. Hành trình này không chỉ giúp cô nhìn nhận thế giới theo cách tích cực hơn mà còn chứng minh rằng những điều nhỏ bé có thể tạo ra sự thay đổi lớn lao. Cuốn sách mang đến những câu chuyện chân thực, những bài học sâu sắc và những gợi ý thiết thực để bạn có thể áp dụng lòng tử tế vào cuộc sống hằng ngày. Nếu bạn đang tìm kiếm một cách để khiến bản thân hạnh phúc hơn, cải thiện các mối quan hệ và lan tỏa điều tốt đẹp, đây chính là cuốn sách dành cho bạn!</p> <!-- Văn bản giới thiệu -->
+      <h3>Thí sinh</h3> <!-- Tiêu đề thí sinh -->
+      <ul>
+        <li>Dương Kim Khánh -8/4</li> <!-- Gạch đầu dòng 1 -->
+        <li>Nguyễn Diệu Anh -8/4</li> <!-- Gạch đầu dòng 2 -->
+        <li>Phan Minh Quân -8/4</li> <!-- Gạch đầu dòng 3 -->
+      </ul>
+      <h3>Ứng dụng công nghệ số</h3> <!-- Tiêu đề ứng dụng công nghệ -->
+      <p>Ứng dụng ngôn ngữ đánh dấu siêu văn bản (HTML) để tạo khung cho trang web , dùng ngôn ngữ định dạng (CSS) để trang trí trang web và sử dụng ngôn ngữ lập trình javascript để tạo ra nút play/pause để chạy và tạm dừng trình phát audio.
+
+      </p> <!-- Văn bản ứng dụng công nghệ -->
+    </div>
+  </div>
+
+  <audio id="audio" src="pod.mp3"></audio> <!-- Phần tử audio -->
+
+  <script>
+    const audio = document.getElementById('audio'); // Lấy phần tử audio
+    const playPauseBtn = document.getElementById('playPause'); // Lấy nút phát/tạm dừng
+    const rewindBtn = document.getElementById('rewind'); // Lấy nút tua lại
+    const forwardBtn = document.getElementById('forward'); // Lấy nút tua tới
+    const progressBar = document.getElementById('progressBar'); // Lấy thanh tiến trình
+    const progress = document.getElementById('progress'); // Lấy phần tử tiến trình
+    const timeDisplay = document.getElementById('time'); // Lấy phần tử hiển thị thời gian
+
+    let isPlaying = false; // Theo dõi trạng thái phát
+
+    // Chuyển đổi phát/tạm dừng
+    function togglePlayPause() {
+      if (isPlaying) {
+        audio.pause();
+        playPauseBtn.textContent = '▶️';
+      } else {
+        audio.play();
+        playPauseBtn.textContent = '⏸';
+      }
+      isPlaying = !isPlaying;
+    }
+
+    playPauseBtn.addEventListener('click', togglePlayPause); // Thêm sự kiện cho nút phát/tạm dừng
+
+    // Tua lại audio
+    rewindBtn.addEventListener('click', () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 10);
+    });
+
+    // Tua tới audio
+    forwardBtn.addEventListener('click', () => {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+    });
+
+    // Cập nhật thanh tiến trình và hiển thị thời gian
+    audio.addEventListener('timeupdate', () => {
+      const currentTime = audio.currentTime;
+      const duration = audio.duration;
+      const progressWidth = (currentTime / duration) * 100;
+      progress.style.width = `${progressWidth}%`;
+
+      const currentMins = Math.floor(currentTime / 60);
+      const currentSecs = Math.floor(currentTime % 60);
+      const durationMins = Math.floor(duration / 60);
+      const durationSecs = Math.floor(duration % 60);
+
+      timeDisplay.textContent = `${currentMins}:${currentSecs < 10 ? '0' : ''}${currentSecs} / ${durationMins}:${durationSecs < 10 ? '0' : ''}${durationSecs}`;
+    });
+
+    // Tua audio
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const newTime = (clickX / width) * audio.duration;
+      audio.currentTime = newTime;
+    });
+
+    // Đặt lại nút phát/tạm dừng và thanh tiến trình khi audio kết thúc
+    audio.addEventListener('ended', () => {
+      playPauseBtn.textContent = '▶️';
+      isPlaying = false;
+      progress.style.width = '0%';
+      audio.currentTime = 0;
+    });
+  </script>
+</body>
+</html>
